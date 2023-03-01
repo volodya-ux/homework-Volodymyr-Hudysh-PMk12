@@ -1,0 +1,130 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+
+using namespace std;
+
+class Talon
+{
+private:
+	string teacher;
+	string subject;
+	int points;  //бали за семестр
+	
+public:
+	 Talon() :subject(" "), points(0), teacher(" ") {}
+     Talon(string s, int p, string t) : subject(s), points(p), teacher(t) {}
+
+	 string GetTeacher() { return teacher; }
+	 string GetSublect() { return subject; }
+	 int GetPoints() { return points; }
+	
+
+
+	 friend ostream& operator << (ostream& out, const Talon t)
+	 {
+		 out << t.subject; out << t.points; out << t.teacher;
+		 return out;
+	 }
+
+	 friend istream& operator >> (istream& is, Talon t)
+	 {is >> t.subject; is >> t.points; is >> t.teacher;
+		 return is;
+	 }
+
+	 
+};
+
+
+class Student
+{
+	Talon talon;
+	Talon* talons;
+	string name;
+	int numbers;
+	string group;
+	Talon talon; 
+	Talon* talons;
+public:
+	Student() : talons(nullptr) {}
+	Student(string f, string g, unsigned int n, Talon t) : name(f), group(g), numbers(n), talon(t)
+	{
+		talons = new Talon[numbers];
+	}
+	~Student()
+	{
+		delete[] talons;
+	}
+
+	string GetTeacher() { return talon.GetTeacher(); }
+	int GetPoints() { return talon.GetPoints(); }
+	string GetName() { return name; }
+	Talon* GetTalons()
+	{
+		return talons;
+	}
+
+	friend istream& operator >> (istream& is, Student s)
+	{is >> s.name; is >> s.group; is >> s.numbers; is >> s.talon;
+		return is;
+	}
+
+	friend ostream& operator << (ostream& out, const Student s)
+	{out << s.name;	out << s.group;out << s.numbers; out << s.talon;
+		return out;
+	}
+};
+int main()
+{
+	int n;
+    ifstream f("student.txt");
+	f >> n;
+	Student* array = new Student[n];
+
+	int i = 0;
+
+	while (!f.eof() && i < n)
+	{
+		f >> array[i];
+
+		i++;
+	}
+
+	f.close();
+
+	ofstream out1 ("file1.txt");
+	for (int i = 0; i < n; i++)
+	{
+		if (array[i].GetPoints() > 0 && array[i].GetPoints() < 10)
+
+			out1 << array[i].GetName();
+	}
+
+	out1.close();
+
+	ofstream out2 ("file2.txt");
+    for (int i = 0; i < n - 1; i++)
+	{
+		for (int j = 0; j < n - 1 - i; j++)
+		{
+			if (array[j].GetTeacher() > array[j + 1].GetTeacher())
+			{
+				string temp = 0;
+				temp = array[j].GetTeacher();
+
+				array[j].GetTeacher() = array[j + 1].GetTeacher();
+				array[j + 1].GetTeacher() = temp;
+			}
+		}
+	}
+
+	for (int i = 1; i < n; i++)
+	{
+		if (array[i].GetTeacher() != array[i - 1].GetTeacher())
+
+			out2 << array[i].GetTeacher();
+	}
+
+	out2.close();
+	return 0;
+}
