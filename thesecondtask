@@ -1,0 +1,87 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Product 
+{
+private:
+    string CountryCode;
+    double price;
+public:
+    Product(string country_code, double price) 
+    {
+        CountryCode = country_code;
+        this->price = price;
+    }
+    string GetCountryCode() 
+    {
+        return CountryCode;
+    }
+    double GetPrice()
+    {
+        return price;
+    }
+   
+};
+
+class Toy : public Product 
+{
+private:
+    string name;
+    int Minage;
+    int Maxage;
+public:
+
+    Toy(std::string Countrycode, double price, std::string name, int Min, int Max)
+        : Product(Countrycode, price) 
+    {
+        this->name = name;
+        this->Minage = Min;
+        this->Maxage = Max;
+    }
+    std::string get_name() 
+    {
+        return name;
+    }
+    int GetMinAge() 
+    {
+        return Minage;
+    }
+    int GetMaxAge() 
+    {
+        return Maxage;
+    }
+};
+
+int main()
+{
+    Toy toys[] =
+    {
+        Toy("US", 10.0, "Плюшевий медведик", 0, 5),
+        Toy("CN", 5.0, "Пластмасова машинка", 2, 10),
+        Toy("JP", 15.0, "Лялька", 6, 99),
+        Toy("DE", 20.0, "Конструктор лего", 5, 15),
+    };
+
+
+    int num_toys = sizeof(toys) / sizeof(toys[0]);
+    int MinAge, MaxAge;
+    double min_price, max_price;
+    cout << "Enter the age range for the toys: ";
+    cin >> MinAge >> MaxAge;
+
+    cout << "Введіть діапазон ціни на іграшку від найменшої до найбільшої: ";
+    cin >> min_price >> max_price;
+
+    cout << "Рекомендовані іграшки:" <<endl;
+    for (int i = 0; i < num_toys; i++) 
+    {
+        Toy toy = toys[i];
+        if (toy.GetMinAge() <= MaxAge && toy.GetMaxAge() >= MinAge && toy.GetPrice() >= min_price && toy.GetPrice() <= max_price)
+        {
+            cout << toy.get_name() << " Вироблено у  цій: "  << toy.GetCountryCode() << " країні" << endl;
+        }
+    }
+    return 0;
+}
