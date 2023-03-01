@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Phone {
+protected:
+   string name;
+    string brand;
+    double price;
+public:
+    Phone(string name, string brand, double price) {
+        this->name = name;
+        this->brand = brand;
+        this->price = price;
+    }
+    virtual void display_info() = 0;
+};
+
+class MobilePhone : public Phone 
+{
+private:
+    string color;
+    int Memorysize;
+public:
+    MobilePhone(string name, string brand, double price, string color, int Memorysize)
+        : Phone(name, brand, price)
+    {
+        this->color = color;
+        this->Memorysize = Memorysize;
+    }
+    void display_info() 
+    {
+        cout << "Mobile Phone: " << name << ", Brand: " << brand << ", Price: " << price << ", Color: " << color << ", Memory Size: " << Memorysize << endl;
+    }
+};
+
+class Radiophone : public Phone 
+{
+private:
+    int range; // радіус дії використання радіотелефону оскільки він радіотелефон
+    bool answering_machine;
+public:
+    Radiophone(string name, string brand, double price, int range)
+        : Phone(name, brand, price) {
+        this->range = range;
+        
+    }
+    void display_info() {
+        cout << "Radiophone: " << name << ", brand: " << brand << ", price: " << price << ", range: " << range << endl;
+    }
+};
+
+int main() {
+    MobilePhone mobilephone1("iPhone 13", "Apple", 999.0, "Gold", 128);
+    Radiophone radiophone1("sggg324", "Panasonic", 80.0, 100);
+
+    mobilephone1.display_info();
+    radiophone1.display_info();
+
+    return 0;
+}
